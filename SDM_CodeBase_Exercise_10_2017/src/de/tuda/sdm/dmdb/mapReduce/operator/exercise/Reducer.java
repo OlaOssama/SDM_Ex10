@@ -58,25 +58,64 @@ public class Reducer<KEYIN extends AbstractSQLValue, VALUEIN extends AbstractSQL
 	@Override
 	@SuppressWarnings("unchecked")
 	public AbstractRecord next() {
-		AbstractRecord rec = child.next();
-		System.out.println(rec);
-		if(rec == null){
+		if(lastRecord == null){
+		lastRecord = child.next();
+		if(lastRecord == null){
 			return null;
 		}
-		lastRecord = rec;
-		List<AbstractSQLValue> it = new LinkedList<AbstractSQLValue>();
-		it.add(rec.getValue(VALUE_COLUMN));
-		rec = child.next();
-		while (rec != null && rec.getValue(KEY_COLUMN).equals(lastRecord.getValue(KEY_COLUMN))) {
-			it.add(rec.getValue(VALUE_COLUMN));
-			System.out.println("rec2: "+rec.getValue(VALUE_COLUMN));
-			lastRecord = rec;
-			rec = child.next();
 		}
-		System.out.println(it);
-		super.reduce((KEYIN)rec.getValue(KEY_COLUMN), (Iterable<VALUEIN>)it , nextList);
-		System.out.println("nextlist:"+nextList);
+		List<AbstractSQLValue> it = new LinkedList<AbstractSQLValue>();
+		it.add(lastRecord.getValue(VALUE_COLUMN));
+		System.out.println("a "+it);
+		AbstractRecord rec;
+		while ((rec = child.next()) != null) {
+			if(rec.getValue(KEY_COLUMN).equals(lastRecord.getValue(KEY_COLUMN))){
+				it.add(rec.getValue(VALUE_COLUMN));
+				System.out.println("b "+it);
+			}
+			else{
+				lastRecord = rec;
+				break;
+			}
+		}
+		System.out.println("c "+it);
+		super.reduce((KEYIN)lastRecord.getValue(KEY_COLUMN), (Iterable<VALUEIN>)it , nextList);
+		
+		if(rec==null){
+			System.out.println("null "+nextList);
+			return null;
+		}
+		System.out.println("nextlist "+nextList);
 		return nextList.poll();
+		
+//		while(true){
+//			System.out.println("111");
+//			AbstractRecord rec = child.next();
+//			System.out.println(rec==null);
+//			if(rec==null){
+//				super.reduce((KEYIN)lastRecord.getValue(KEY_COLUMN), (Iterable<VALUEIN>)it , nextList);
+//				System.out.println("aefsef");
+//				return null;
+//			}
+//			if (lastRecord.getValue(KEY_COLUMN).equals(rec.getValue(KEY_COLUMN))) {
+//				System.out.println("22");
+//				it.add(rec.getValue(VALUE_COLUMN));
+//				System.out.println("it1 :"+it);
+//			}
+//			else{
+//				System.out.println("3333");
+//				lastRecord = rec;
+//				super.reduce((KEYIN)lastRecord.getValue(KEY_COLUMN), (Iterable<VALUEIN>)it , nextList);
+//				System.out.println("it "+it);
+//				return nextList.poll();
+//			}
+//			
+//			
+//		}
+//		System.out.println("it: "+it);
+//		System.out.println("recasdfcsdf"+rec);
+//		System.out.println("nextlist:"+nextList);
+//		return nextList.poll();
 
 		// TODO: implement this method
 		// this method has to prepare the input to the reduce function
