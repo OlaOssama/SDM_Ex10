@@ -39,7 +39,6 @@ public class TestMapper extends TestCase{
 			actualResult.add(next);
 		}
 		mapper.close();
-		
 		Assert.assertEquals(expectedResult.size(), actualResult.size());
 		
 		for (int i = 0; i < actualResult.size(); i++) {
