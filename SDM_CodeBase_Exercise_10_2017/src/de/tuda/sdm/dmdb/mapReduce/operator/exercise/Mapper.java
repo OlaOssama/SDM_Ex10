@@ -1,10 +1,14 @@
 package de.tuda.sdm.dmdb.mapReduce.operator.exercise;
 
 import java.util.LinkedList;
+import java.util.Queue;
+
 import de.tuda.sdm.dmdb.mapReduce.operator.MapReduceOperator;
 import de.tuda.sdm.dmdb.mapReduce.operator.MapperBase;
 import de.tuda.sdm.dmdb.storage.AbstractRecord;
 import de.tuda.sdm.dmdb.storage.types.AbstractSQLValue;
+import de.tuda.sdm.dmdb.storage.types.exercise.SQLInteger;
+import de.tuda.sdm.dmdb.storage.types.exercise.SQLVarchar;
 
 /**
  * similar to:
@@ -45,6 +49,18 @@ public class Mapper<KEYIN extends AbstractSQLValue, VALUEIN extends AbstractSQLV
 	}
 
 	@Override
+	protected void map(KEYIN key, VALUEIN value, Queue<AbstractRecord> outList) {
+		String s = value.toString();
+		String[] str = s.split("\\s+");
+		for (String string : str) {
+			AbstractRecord record = MapReduceOperator.keyValueRecordPrototype.clone();
+			record.setValue(MapReduceOperator.KEY_COLUMN, new SQLVarchar(string, 100));
+			record.setValue(MapReduceOperator.VALUE_COLUMN, new SQLInteger(1));
+			outList.offer(record);
+		}
+	}
+
+	@Override
 	@SuppressWarnings("unchecked")
 	public AbstractRecord next() {
 		// TODO: implement this method
@@ -59,8 +75,13 @@ public class Mapper<KEYIN extends AbstractSQLValue, VALUEIN extends AbstractSQLV
 
 		// invoke the map function on the input and pass in this.nextList to cache the
 		// output pairs there
-
-		return null;
+		AbstractRecord rec = child.next();
+		if (rec != null) {
+			Queue<AbstractRecord> interResult = new LinkedList<AbstractRecord>();
+			super.map((KEYIN) rec.getValue(KEY_COLUMN), (VALUEIN) rec.getValue(VALUE_COLUMN), interResult);
+			nextList.addAll(interResult);
+		}
+		return nextList.poll();
 	}
 
 	@Override
