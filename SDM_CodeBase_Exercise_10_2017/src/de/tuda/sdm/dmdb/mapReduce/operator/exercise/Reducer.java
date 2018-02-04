@@ -1,5 +1,6 @@
 package de.tuda.sdm.dmdb.mapReduce.operator.exercise;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -56,15 +57,16 @@ public class Reducer<KEYIN extends AbstractSQLValue, VALUEIN extends AbstractSQL
 
 	protected void reduce(KEYIN key, Iterable<VALUEIN> values, Queue<AbstractRecord> nextList) {
 		AbstractRecord newRecord = MapReduceOperator.keyValueRecordPrototype.clone();
-		// newRecord.setValue(MapReduceOperator.KEY_COLUMN, (KEYOUT) key);
+
 		SQLInteger res = new SQLInteger();
 		int counter = 0;
 		for (VALUEIN value : values) {
 			counter += ((SQLInteger) value).getValue();
 		}
 		res.setValue(counter);
-		newRecord.setValue(MapReduceOperator.KEY_COLUMN, (KEYIN) key);
-		newRecord.setValue(MapReduceOperator.VALUE_COLUMN, res);
+		
+		newRecord.setValue(MapReduceOperator.KEY_COLUMN, (KEYOUT) key);
+		newRecord.setValue(MapReduceOperator.VALUE_COLUMN, (VALUEOUT) res);
 		nextList.add(newRecord);
 	}
 
@@ -87,11 +89,11 @@ public class Reducer<KEYIN extends AbstractSQLValue, VALUEIN extends AbstractSQL
 				break;
 			}
 		}
-		reduce((KEYIN) lastRecord.getValue(KEY_COLUMN), (Iterable<VALUEIN>) it, nextList);
+		
+		this.reduce((KEYIN) lastRecord.getValue(KEY_COLUMN), (Iterable<VALUEIN>) it, nextList);
+		
 		lastRecord = rec;
-		if (rec == null) {
-			lastRecord = null;
-		}
+		
 		return nextList.poll();
 
 		// TODO: implement this method

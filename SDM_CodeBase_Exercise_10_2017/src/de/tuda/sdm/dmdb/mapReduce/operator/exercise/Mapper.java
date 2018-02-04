@@ -53,7 +53,7 @@ public class Mapper<KEYIN extends AbstractSQLValue, VALUEIN extends AbstractSQLV
 		String[] str = value.toString().split("\\s+");
 		for (String string : str) {
 			AbstractRecord record = MapReduceOperator.keyValueRecordPrototype.clone();
-			record.setValue(MapReduceOperator.KEY_COLUMN, new SQLVarchar(string, 100));
+			record.setValue(MapReduceOperator.KEY_COLUMN, new SQLVarchar(string, 255));
 			record.setValue(MapReduceOperator.VALUE_COLUMN, new SQLInteger(1));
 			outList.offer(record);
 		}
@@ -77,7 +77,7 @@ public class Mapper<KEYIN extends AbstractSQLValue, VALUEIN extends AbstractSQLV
 		AbstractRecord rec = child.next();
 		if (rec != null) {
 			Queue<AbstractRecord> interResult = new LinkedList<AbstractRecord>();
-			super.map((KEYIN) rec.getValue(KEY_COLUMN), (VALUEIN) rec.getValue(VALUE_COLUMN), interResult);
+			this.map((KEYIN) rec.getValue(KEY_COLUMN), (VALUEIN) rec.getValue(VALUE_COLUMN), interResult);
 			nextList.addAll(interResult);
 		}
 		return nextList.poll();

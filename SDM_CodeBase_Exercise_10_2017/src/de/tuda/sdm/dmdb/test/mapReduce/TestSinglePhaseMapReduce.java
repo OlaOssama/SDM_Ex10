@@ -1,5 +1,6 @@
 package de.tuda.sdm.dmdb.test.mapReduce;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -72,7 +73,16 @@ public class TestSinglePhaseMapReduce extends BaseMapReduceTestCase{
 		List<HeapTable> partitions =  new ArrayList<HeapTable>();
 		List<AbstractRecord> expectedResult = new ArrayList<AbstractRecord>();
 		this.initPartitionsAndExpectedResult(partitionStrings, stringLength, partitions, expectedResult);
-
+		
+		System.out.println("Expected result: "+expectedResult);
+		System.out.println("partition result: "+partitions);
+//		try {
+//			System.in.read();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		
 		List<HeapTable> outputs = new ArrayList<HeapTable>();
 		AbstractRecord outputPrototype =  new Record(2);
 		outputPrototype.setValue(0, new SQLVarchar("key", stringLength));

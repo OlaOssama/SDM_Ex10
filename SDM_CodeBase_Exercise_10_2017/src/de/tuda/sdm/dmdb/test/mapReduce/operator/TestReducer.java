@@ -42,7 +42,9 @@ public class TestReducer extends TestCase{
 //			actualResult.add(next);
 //		}
 //		reducer.close();
-//		System.out.println("actual result: "+actualResult);
+//		System.out.println("actual: " +actualResult);
+//		System.out.println("expected: " + expectedResult);
+//		
 //		Assert.assertEquals(expectedResult.size(), actualResult.size());
 //		
 //		for (int i = 0; i < actualResult.size(); i++) {
@@ -51,6 +53,8 @@ public class TestReducer extends TestCase{
 //			Assert.assertEquals(value1, value2);
 //		}
 //	}
+	
+	
 	public void test2(){
 
 		List<AbstractRecord> expectedResult = new ArrayList<AbstractRecord>();
