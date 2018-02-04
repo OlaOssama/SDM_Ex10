@@ -76,12 +76,6 @@ public class TestSinglePhaseMapReduce extends BaseMapReduceTestCase{
 		
 		System.out.println("Expected result: "+expectedResult);
 		System.out.println("partition result: "+partitions);
-//		try {
-//			System.in.read();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
 		
 		List<HeapTable> outputs = new ArrayList<HeapTable>();
 		AbstractRecord outputPrototype =  new Record(2);

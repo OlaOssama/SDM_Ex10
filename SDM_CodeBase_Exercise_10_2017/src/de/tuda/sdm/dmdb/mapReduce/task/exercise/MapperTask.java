@@ -8,30 +8,57 @@ import de.tuda.sdm.dmdb.storage.AbstractRecord;
 import de.tuda.sdm.dmdb.storage.types.AbstractSQLValue;
 
 /**
- * Defines what happens during the map-phase of a map-reduce job
- * Ie. implements the operator chains for a reduce-phase
- * The last operator in the chain writes to the output, ie. is used to populate the output
+ * Defines what happens during the map-phase of a map-reduce job Ie. implements
+ * the operator chains for a reduce-phase The last operator in the chain writes
+ * to the output, ie. is used to populate the output
  * 
  * @author melhindi
  *
  */
 public class MapperTask extends MapperTaskBase {
 
-	public MapperTask(HeapTable input, HeapTable output, Class<? extends MapperBase<? extends AbstractSQLValue, ? extends AbstractSQLValue, ? extends AbstractSQLValue, ? extends AbstractSQLValue>> mapperClass) {
-		super(input,output, mapperClass);
+	public MapperTask(HeapTable input, HeapTable output,
+			Class<? extends MapperBase<? extends AbstractSQLValue, ? extends AbstractSQLValue, ? extends AbstractSQLValue, ? extends AbstractSQLValue>> mapperClass) {
+		super(input, output, mapperClass);
 	}
 
 	@Override
 	public void run() {
 		// TODO: implement this method
-		// read data from input (Remember: There is a special operator to read data from a Table)
+		// read data from input (Remember: There is a special operator to read data from
+		// a Table)
 
 		// instantiate the mapper-operator
-		
+
 		// process the input and write to the output
-		
+
 		// processing done
 
-	}
+		TableScan ts = new TableScan(input);
+		MapperBase<? extends AbstractSQLValue, ? extends AbstractSQLValue, ? extends AbstractSQLValue, ? extends AbstractSQLValue> mapper;
 
+		try {
+			mapper = this.mapperClass.newInstance();
+			mapper.setChild(ts);
+			mapper.open();
+			AbstractRecord next;
+
+			boolean init = false;
+
+			while ((next = mapper.next()) != null) {
+				if (!init) {
+					output = new HeapTable(next.clone()); // take the first tuple as sample
+					init = true;
+				}
+				output.insert(next);
+			}
+			mapper.close();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

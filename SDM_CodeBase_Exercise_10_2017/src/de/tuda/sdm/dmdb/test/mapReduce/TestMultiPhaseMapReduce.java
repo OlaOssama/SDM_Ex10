@@ -74,6 +74,9 @@ public class TestMultiPhaseMapReduce extends BaseMapReduceTestCase{
 		List<AbstractRecord> expectedResult = new ArrayList<AbstractRecord>();
 		this.initPartitionsAndExpectedResult(partitionStrings, stringLength, partitions, expectedResult);
 
+		System.out.println("Expected result: "+expectedResult);
+		System.out.println("partition result: "+partitions);
+		
 		List<HeapTable> outputs = new ArrayList<HeapTable>();
 		AbstractRecord outputPrototype =  new Record(2);
 		outputPrototype.setValue(0, new SQLVarchar("key", stringLength));
