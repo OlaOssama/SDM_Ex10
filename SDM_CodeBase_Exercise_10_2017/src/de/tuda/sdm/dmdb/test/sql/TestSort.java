@@ -16,7 +16,7 @@ import de.tuda.sdm.dmdb.storage.types.AbstractSQLValue;
 import de.tuda.sdm.dmdb.storage.types.exercise.SQLInteger;
 import de.tuda.sdm.dmdb.test.TestCase;
 
-public class TestSort extends TestCase{
+public class TestSort extends TestCase {
 
 	public void testSort() {
 		int numRecords = 10;
@@ -29,7 +29,7 @@ public class TestSort extends TestCase{
 		HeapTable ht = new HeapTable(r);
 
 		for (int i = 0; i < numRecords; i++) {
-			Random rand = new Random(); 
+			Random rand = new Random();
 			int value = rand.nextInt(numRecords);
 			AbstractRecord newRecord = new Record(1);
 			newRecord.setValue(0, new SQLInteger(value));
@@ -40,7 +40,7 @@ public class TestSort extends TestCase{
 		expectedResult.sort(null);
 
 		TableScan ts = new TableScan(ht);
-		int compareColumn = 0; 
+		int compareColumn = 0;
 		Comparator<AbstractRecord> recordComparator = new Comparator<AbstractRecord>() {
 			public int compare(AbstractRecord record1, AbstractRecord record2) {
 
@@ -53,13 +53,13 @@ public class TestSort extends TestCase{
 		Sort sort = new Sort(ts, recordComparator);
 		sort.open();
 		AbstractRecord nextRecord;
-		while((nextRecord = sort.next()) != null) {
-			actualResult.add(((SQLInteger)nextRecord.getValue(compareColumn)).getValue());
+		while ((nextRecord = sort.next()) != null) {
+			actualResult.add(((SQLInteger) nextRecord.getValue(compareColumn)).getValue());
 		}
 		sort.close();
-		
+
 		Assert.assertEquals(expectedResult.size(), actualResult.size());
-		
+
 		for (int i = 0; i < actualResult.size(); i++) {
 			Integer value1 = expectedResult.get(i);
 			Integer value2 = actualResult.get(i);

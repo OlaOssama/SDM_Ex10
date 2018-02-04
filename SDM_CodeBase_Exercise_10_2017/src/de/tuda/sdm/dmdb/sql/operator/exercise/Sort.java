@@ -11,8 +11,7 @@ import de.tuda.sdm.dmdb.sql.operator.SortBase;
 import de.tuda.sdm.dmdb.storage.AbstractRecord;
 import de.tuda.sdm.dmdb.storage.Record;
 
-public class Sort extends SortBase{
-
+public class Sort extends SortBase {
 
 	public Sort(Operator child, Comparator<AbstractRecord> recordComparator) {
 		super(child, recordComparator);
@@ -23,9 +22,11 @@ public class Sort extends SortBase{
 		child.open();
 		sortedRecords = new PriorityQueue<AbstractRecord>(recordComparator);
 		AbstractRecord next;
-		while((next = child.next())!= null){
-		sortedRecords.add(next);
-		}
+		do {
+			next = child.next();
+			if (next != null)
+				sortedRecords.offer(next);
+		} while (next != null);
 		// TODO: implement this method
 		// make sure to initialize the required (inherited) member variables
 	}
