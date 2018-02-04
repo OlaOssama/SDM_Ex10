@@ -21,14 +21,14 @@ public class Job {
 		File visitDataFile = new File(visitDataInput);
 
 		Reader<String, String> reader = new Reader<>();
-		reader.read(visitDataFile, DELIMETER, visitDataReaderContext);
+		reader.read(visitDataFile, DELIMETER+"01", visitDataReaderContext);
 
 		// read devices.csv
 		Context<String, String> devicesReaderContext = new Context<String, String>();
 		String devicesData = "data/devices.csv";
 
 		File devicesFile = new File(devicesData);
-		reader.read(devicesFile, DELIMETER, devicesReaderContext);
+		reader.read(devicesFile, DELIMETER+"10", devicesReaderContext);
 		
 		/*
 		 * Perform mapping and reducing steps (as many as needed)
