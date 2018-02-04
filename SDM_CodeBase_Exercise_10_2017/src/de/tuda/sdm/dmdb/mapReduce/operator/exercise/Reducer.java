@@ -70,7 +70,6 @@ public class Reducer<KEYIN extends AbstractSQLValue, VALUEIN extends AbstractSQL
 		}
 		List<AbstractSQLValue> it = new LinkedList<AbstractSQLValue>();
 		it.add(lastRecord.getValue(VALUE_COLUMN));
-		System.out.println("a "+it);
 		AbstractRecord rec;
 		while ((rec = child.next()) != null) {
 			if(rec.getValue(KEY_COLUMN).equals(lastRecord.getValue(KEY_COLUMN))){
@@ -81,13 +80,11 @@ public class Reducer<KEYIN extends AbstractSQLValue, VALUEIN extends AbstractSQL
 				break;
 			}
 		}
-		System.out.println("c "+it);
 		reduce((KEYIN)lastRecord.getValue(KEY_COLUMN), (Iterable<VALUEIN>)it , nextList);
 		lastRecord = rec;
 		if(rec==null){
 			lastRecord = null;
 		}
-		System.out.println("nextlist "+nextList);
 		return nextList.poll();
 
 		// TODO: implement this method
