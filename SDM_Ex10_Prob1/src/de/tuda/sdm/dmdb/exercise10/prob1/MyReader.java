@@ -15,7 +15,13 @@ public class MyReader extends Reader {
 		int keyColumn = Character.getNumericValue(inStr.charAt(1));
 		int valueColumn = Character.getNumericValue(inStr.charAt(2));
 		try (BufferedReader br = new BufferedReader(new FileReader(input))) {
+			boolean firstLineRead = false;
+
 			while ((line = br.readLine()) != null) {
+				if (!firstLineRead) {	// avoid first line
+					firstLineRead = true;
+					continue;
+				}
 				String[] res = line.split(cvsSplitBy);
 				context.write(res[keyColumn], res[valueColumn]);
 			}

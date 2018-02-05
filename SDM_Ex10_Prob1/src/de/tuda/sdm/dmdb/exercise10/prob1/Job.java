@@ -16,27 +16,31 @@ public class Job {
 		Reader<String, String> reader = new MyReader();
 		
 		// read devices.csv
+		System.out.println("Read devices data...");
 		Context<String, String> devicesReaderContext = new Context<String, String>();
 		String devicesData = "data/devices.csv";
 
 		File devicesFile = new File(devicesData);
 		reader.read(devicesFile, DELIMETER + "10", devicesReaderContext);
+		System.out.println("Read devices data FINISHED.");
 		
 		// read visitData
+		System.out.println("Read visit data...");
 		String visitDataInput = "data/" + visitDatasetFileName;
 		Context<String, String> visitDataReaderContext = new Context<String, String>();
 
 		File visitDataFile = new File(visitDataInput);
 		reader.read(visitDataFile, DELIMETER + "01", visitDataReaderContext);
-
+		System.out.println("Read visit data FINISHED.");
+		
 		/*
 		 * Perform mapping and reducing steps (as many as needed)
 		 */
-
-		// Context<...> mapper1Context = new Context<>();
-		// Mapper<...> mapper1 = new ...;
-		// mapper1.run(readerContext, mapper1Context);
-
+		 Context<String, Context<String, Integer>> mapper1Context = new Context<>();
+		 Mapper<String, String, String, Context<String, Integer>> mapper1 = new MyMapper<>();
+		 mapper1.run(devicesReaderContext, mapper1Context);
+		 
+		 mapper1Context.display();
 		// Context<...> reducer1Context = new Context<>();
 		// Reducer<...> reducer1 = new ...;
 		// reducer1.run(mapper1Context, reducer1Context);
