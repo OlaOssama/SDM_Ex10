@@ -1,5 +1,6 @@
 package de.tuda.sdm.dmdb.exercise10.prob1;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,5 +36,15 @@ public class Context<KEY, VALUE> {
         }
 
         keyValues.get(k).add(v);
+    }
+    
+    public void display() {
+    	System.out.println("key-val: "+keyValues);
+        try {
+			System.in.read();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 }
