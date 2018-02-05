@@ -1,6 +1,5 @@
 package de.tuda.sdm.dmdb.exercise10.prob1;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -14,7 +13,7 @@ public class Job {
 	static String DELIMETER = ";";
 
 	public static void run(String visitDatasetFileName, String outFileName) throws IOException {
-		Reader<String, String> reader = new Reader<>();
+		Reader<String, String> reader = new MyReader();
 		
 		// read devices.csv
 		Context<String, String> devicesReaderContext = new Context<String, String>();
