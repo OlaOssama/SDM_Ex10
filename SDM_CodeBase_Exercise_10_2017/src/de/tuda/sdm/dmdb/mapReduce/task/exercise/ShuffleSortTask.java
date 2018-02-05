@@ -60,23 +60,19 @@ public class ShuffleSortTask extends ShuffleSortTaskBase {
 		}
 		shuffleOperator.close();
 		
-		System.out.println("shuffle: " + shuffledIntermediateResult);
-		
 		// sort intermediate result
-		ts = new TableScan(shuffledIntermediateResult);
-		Sort sort = new Sort(ts, recordComparator);
-		sort.open();
+		if (shuffledIntermediateResult != null) { // only sort if inter result not empty
+			ts = new TableScan(shuffledIntermediateResult);
+			Sort sort = new Sort(ts, recordComparator);
+			sort.open();
 
-		init = false;
+			init = false;
 
-		while ((next = sort.next()) != null) {
-			if (!init) {
-				output = new HeapTable(next.clone());
-				init = true;
+			while ((next = sort.next()) != null) {
+				output.insert(next);
 			}
-			output.insert(next);
-		}
-		sort.close();
+			sort.close();
+		} 
 	}
 
 }

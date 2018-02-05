@@ -5,9 +5,8 @@ import de.tuda.sdm.dmdb.mapReduce.operator.MapperBase;
 import de.tuda.sdm.dmdb.storage.types.AbstractSQLValue;
 
 /**
- * Base Class for implementing the Mapper Task
- * Defines member variables
- * The Mapper-Task is executed during the map-phase and invokes the mapper-operator
+ * Base Class for implementing the Mapper Task Defines member variables The
+ * Mapper-Task is executed during the map-phase and invokes the mapper-operator
  * 
  * @author melhindi
  *
@@ -15,20 +14,26 @@ import de.tuda.sdm.dmdb.storage.types.AbstractSQLValue;
 public class MapperTaskBase extends MapReduceTask {
 
 	/**
-	 * This member variable defines the class of the mapper to instantiate in the run method
+	 * This member variable defines the class of the mapper to instantiate in the
+	 * run method
 	 */
 	protected Class<? extends MapperBase<? extends AbstractSQLValue, ? extends AbstractSQLValue, ? extends AbstractSQLValue, ? extends AbstractSQLValue>> mapperClass;
 
 	/**
 	 * Constructor to create a task
-	 * @param input - The input table on which this task will operate on
-	 * @param output - The output table to which this task write to
-	 * @param mapperClass - The java Class of the mapper to instantiate and use during the map-phase
+	 * 
+	 * @param input
+	 *            - The input table on which this task will operate on
+	 * @param output
+	 *            - The output table to which this task write to
+	 * @param mapperClass
+	 *            - The java Class of the mapper to instantiate and use during the
+	 *            map-phase
 	 */
-	public MapperTaskBase(HeapTable input, HeapTable output, Class<? extends MapperBase<? extends AbstractSQLValue, ? extends AbstractSQLValue, ? extends AbstractSQLValue, ? extends AbstractSQLValue>> mapperClass) {
-		super(input,output);
+	public MapperTaskBase(HeapTable input, HeapTable output,
+			Class<? extends MapperBase<? extends AbstractSQLValue, ? extends AbstractSQLValue, ? extends AbstractSQLValue, ? extends AbstractSQLValue>> mapperClass) {
+		super(input, output);
 		this.mapperClass = mapperClass;
 	}
-
 
 }

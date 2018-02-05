@@ -43,14 +43,8 @@ public class MapperTask extends MapperTaskBase {
 			mapper.open();
 			AbstractRecord next;
 
-			boolean init = false;
-
 			while ((next = mapper.next()) != null) {
-				if (!init) {
-					output = new HeapTable(next.clone()); // take the first tuple as sample
-					init = true;
-				}
-				output.insert(next);
+				this.output.insert(next);
 			}
 			mapper.close();
 		} catch (InstantiationException e) {

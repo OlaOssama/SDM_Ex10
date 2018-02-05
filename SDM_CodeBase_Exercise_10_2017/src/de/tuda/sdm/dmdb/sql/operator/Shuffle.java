@@ -54,6 +54,7 @@ public class Shuffle extends UnaryOperator {
 	 */
 	public void setHashFunction(int hashFunction) {
 		this.sendOperator.setHashFunction(hashFunction);
+		
 	}
 
 }
