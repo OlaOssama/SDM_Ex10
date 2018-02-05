@@ -14,22 +14,22 @@ public class Job {
 	static String DELIMETER = ";";
 
 	public static void run(String visitDatasetFileName, String outFileName) throws IOException {
-		// read visitData
-		String visitDataInput = "data/" + visitDatasetFileName;
-		Context<String, String> visitDataReaderContext = new Context<String, String>();
-
-		File visitDataFile = new File(visitDataInput);
-
 		Reader<String, String> reader = new Reader<>();
-		reader.read(visitDataFile, DELIMETER+"01", visitDataReaderContext);
-
+		
 		// read devices.csv
 		Context<String, String> devicesReaderContext = new Context<String, String>();
 		String devicesData = "data/devices.csv";
 
 		File devicesFile = new File(devicesData);
-		reader.read(devicesFile, DELIMETER+"10", devicesReaderContext);
+		reader.read(devicesFile, DELIMETER + "10", devicesReaderContext);
 		
+		// read visitData
+		String visitDataInput = "data/" + visitDatasetFileName;
+		Context<String, String> visitDataReaderContext = new Context<String, String>();
+
+		File visitDataFile = new File(visitDataInput);
+		reader.read(visitDataFile, DELIMETER + "01", visitDataReaderContext);
+
 		/*
 		 * Perform mapping and reducing steps (as many as needed)
 		 */
